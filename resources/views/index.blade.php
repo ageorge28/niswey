@@ -1,8 +1,6 @@
 @extends('app');
 
 @section('content')
-
-
     @if ($message = session()->get('success'))
         <div class="alert alert-success">
             {{ $message }}
@@ -29,35 +27,33 @@
                     <th>Phone</th>
                     <th>Action</th>
                 </tr>
-                @if (count($contacts) > 0)
-                    @foreach ($contacts as $contact)
-                        <tr>
 
-                            <td>{{ $contact->first_name }}</td>
-                            <td>{{ $contact->last_name }}</td>
-                            <td>{{ $contact->phone }}</td>
-                            <td>
+                @forelse ($contacts as $contact)
+                    <tr>
+
+                        <td>{{ $contact->first_name }}</td>
+                        <td>{{ $contact->last_name }}</td>
+                        <td>{{ $contact->phone }}</td>
+                        <td>
 
 
-                                <form method="post" action="{{ route('contacts.destroy', $contact->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a href="{{ route('contacts.edit', $contact->id) }}"
-                                        class="btn btn-warning btn-sm">Edit</a>
-                                    <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
-                                </form>
+                            <form method="post" action="{{ route('contacts.destroy', $contact->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <a href="{{ route('contacts.edit', $contact->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
+                            </form>
 
-                            </td>
-                        </tr>
-                    @endforeach
-                @else
+                        </td>
+                    </tr>
+                @empty
                     <tr>
                         <td colspan="4" class="text-center">No Contacts Found</td>
                     </tr>
-                @endif
+                @endforelse
+
             </table>
             {!! $contacts->links() !!}
         </div>
     </div>
-
 @endsection
